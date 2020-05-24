@@ -6,8 +6,16 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextPane;
+
+import com.morseSimulator.observer.Observer;
 
 import java.awt.Dimension;
 import java.awt.Color;
@@ -15,9 +23,13 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
-public class Screen extends JFrame {
+public class Screen extends JFrame implements Observer {
 	/**
 	 * 
 	 */
@@ -28,6 +40,7 @@ public class Screen extends JFrame {
 	private JTextArea inputText = new JTextArea(), outputText = new JTextArea(), userMessage = new JTextArea();
 	private GridBagLayout gridLayout = new GridBagLayout();
 	private GridBagConstraints gc = new GridBagConstraints();
+	private Controler controler = new Controler();
 	
 	
 	
@@ -39,6 +52,16 @@ public class Screen extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
+		initComponents();
+		
+		this.getContentPane().add(container);
+		this.setVisible(true);
+		
+	}
+	
+	
+	
+	public void initComponents() {
 		container.setLayout(gridLayout);
 		container.setBackground(Color.white);
 		
@@ -51,6 +74,7 @@ public class Screen extends JFrame {
 		inputText.setWrapStyleWord(true);
 		inputText.setLineWrap(true);
 		inputText.setBackground(new Color(230,230,230));
+		inputText.getDocument().addDocumentListener(new InputListener());
 		outputText.setWrapStyleWord(true);
 		outputText.setLineWrap(true);
 		outputText.setBackground(new Color(230,230,230));
@@ -92,6 +116,32 @@ public class Screen extends JFrame {
 		alphabet.setPreferredSize(new Dimension(80,80));
 		alphabet.setText("<html>Afficher l'alphabet morse</html>");
 		alphabet.setContentAreaFilled(false);
+		alphabet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String alphabet = "Lettres :\n"
+						+ "a = .-     b = -...     c = -.-.     d = -..     e = .     f = ..-.     g = --.     h = ....     i = ..\n"
+						+ "j = .---     k = -.-     l = .-..     m = --     n = -.     o = ---     p = .--.     q = --.-     r = .-.\n"
+						+ "s = ...     t = -     u = ..-     v = ...-     w = .--     x = -..-     y = -.--     z = --..\n"
+						+"Chiffres :\n"
+						+ "1 = .----     2 = ..---     3 = ...--     4 = ....-     5 = .....\n"
+						+ "6 = -....     7 = --...     8 = ---..     9 = ----.     0 = -----\n"
+						+"Espace :\n"
+						+ "\' \' =  / \n"
+						+"Ponctuation :\n"
+						+ ". = .-.-.-     , = --..--     ? = ..--..     ' = .----.     ! = -.-.--     / = -..-.\n"
+						+ "( = -.--.     ) = -.--.-     & = .-...     : = ---...     ; = -.-.-.     = = -...-\n"
+						+ "+ = .-.-.     - = -....-     _ = ..--.-     \\\" = .-..-.     $ = ...-..-\n"
+						+ "Caractères spéciaux :\n" 
+						+ "ch = ----     à = .--.-     ç = -.-..     è = .-..-     é = ..-..     @ = .--.-.     \\n = \\n"
+						+ "\n\nL’espacement entre les lettres d’un mot a pour longueur un « taah » (3 « ti »). Il se note par un espace.\n"
+						+ "EXEMPLE -.-. --- -.. . / -- --- .-. ... . (CODE MORSE)\n"
+						+ "https://fr.wikipedia.org/wiki/Code_Morse_international\n"
+						+ "ti = 500ms     ta = 2000ms     "
+						+ "2000ms entre chq lettres     5000ms entre chq mots";
+				JOptionPane.showMessageDialog(null, alphabet, "Alphabet morse", JOptionPane.PLAIN_MESSAGE);
+				
+			}		
+		});
 		container.add(alphabet, gc);
 		
 		//gc.anchor = GridBagConstraints.PAGE_END;
@@ -107,35 +157,48 @@ public class Screen extends JFrame {
 		userMessage.setOpaque(false);
 		userMessage.setLineWrap(true);
 		container.add(userMessage, gc);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		this.getContentPane().add(container);
-		this.setVisible(true);
-		
 	}
 	
 	
 	
+	public class InputListener implements DocumentListener{
+
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			// TODO Auto-generated method stub
+			try {
+			Document x = e.getDocument();
+			String test = x.getText(0, x.getLength());
+			System.out.println(test);
+			
+			}catch(BadLocationException p) {
+				p.printStackTrace();
+			}
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	
-	
-	
-	
-	
+		
+	}
+
+
+
+	@Override
+	public void update(String s) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

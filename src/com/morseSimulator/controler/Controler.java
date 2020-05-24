@@ -1,5 +1,16 @@
 package com.morseSimulator.controler;
 
-public class Controler {
+import com.morseSimulator.model.Model;
 
+public class Controler {
+	
+	private Model model;
+	
+	public Controler(Model model) {
+		this.model = model;
+	}
+	
+	public void control() {
+		
+	}
 }
