@@ -13,8 +13,10 @@ import javax.swing.text.Document;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextPane;
 
+import com.morseSimulator.controler.Controler;
+import com.morseSimulator.model.Model;
+import com.morseSimulator.model.TranslationResult;
 import com.morseSimulator.observer.Observer;
 
 import java.awt.Dimension;
@@ -40,17 +42,21 @@ public class Screen extends JFrame implements Observer {
 	private JTextArea inputText = new JTextArea(), outputText = new JTextArea(), userMessage = new JTextArea();
 	private GridBagLayout gridLayout = new GridBagLayout();
 	private GridBagConstraints gc = new GridBagConstraints();
-	private Controler controler = new Controler();
+	private Controler controler;
 	
 	
 	
 	
 	
-	public Screen() {
+	public Screen(Model model) {
 		this.setTitle("Traducteur Morse");
 		this.setSize(1200, 800);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+		
+		controler = new Controler(model);
+		
+		model.addObserver(this);
 		
 		initComponents();
 		
@@ -156,6 +162,7 @@ public class Screen extends JFrame implements Observer {
 		userMessage.setWrapStyleWord(true);
 		userMessage.setOpaque(false);
 		userMessage.setLineWrap(true);
+		setUserMessage("");
 		container.add(userMessage, gc);
 	}
 	
@@ -165,12 +172,11 @@ public class Screen extends JFrame implements Observer {
 
 		@Override
 		public void insertUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
 			try {
 			Document x = e.getDocument();
 			String test = x.getText(0, x.getLength());
 			System.out.println(test);
-			
+			controler.control(test);
 			}catch(BadLocationException p) {
 				p.printStackTrace();
 			}
@@ -178,25 +184,48 @@ public class Screen extends JFrame implements Observer {
 
 		@Override
 		public void removeUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
-			
+			try {
+			Document x = e.getDocument();
+			String test = x.getText(0, x.getLength());
+			System.out.println(test);
+			controler.control(test);
+			}catch(BadLocationException p) {
+				p.printStackTrace();
+			}
 		}
 
-		@Override
-		public void changedUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-	
-		
+		public void changedUpdate(DocumentEvent e) {}
 	}
 
-
+	public void setUserMessage(String errorString){
+		switch(errorString.length()) {
+		case 0 :
+			this.userMessage.setText("En morse, chaque lettre est traduite.\nL'espacement entre deux lettres vaut un espace.\n"
+					+ "Un espace entre deux mots vaut \"/\".");
+			this.userMessage.setForeground(Color.black);
+			break;
+		case 1 :
+			this.userMessage.setText("L'élément suivant ne peut être traduit : " + errorString + ". Veuillez le retirer pour procéder à la traduction !");
+			this.userMessage.setForeground(Color.red);
+			break;
+		default :
+			if(errorString.length()>100) {
+				errorString = errorString.substring(0,100);
+				this.userMessage.setText("Une multitude d'éléments ne peuvent être traduits, en voici quelques uns : " + errorString
+						+ ". Veuillez les retirer pour procéder à la traduction !");
+			}else {
+				this.userMessage.setText("Les éléments suivants ne peuvent être traduits : " + errorString
+						+ ". Veuillez les retirer pour procéder à la traduction !");
+				this.userMessage.setForeground(Color.red);
+			}
+			break;
+		}
+	}
 
 	@Override
-	public void update(String s) {
-		// TODO Auto-generated method stub
+	public void update(TranslationResult result) {
+		setUserMessage(result.getErrorString());
+		this.outputText.setText(result.getTranslatedString());
 		
 	}
 	

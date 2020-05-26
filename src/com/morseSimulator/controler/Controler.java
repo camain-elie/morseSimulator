@@ -10,7 +10,8 @@ public class Controler {
 		this.model = model;
 	}
 	
-	public void control() {
-		
+	public void control(String s) {
+		System.out.println("control");
+		this.model.translate(s);
 	}
 }
