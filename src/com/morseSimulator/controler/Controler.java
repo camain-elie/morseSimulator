@@ -11,7 +11,7 @@ public class Controler {
 	}
 	
 	public void control(String s) {
-		System.out.println("control");
+		s = s.toLowerCase();
 		this.model.translate(s);
 	}
 }

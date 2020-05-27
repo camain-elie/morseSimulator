@@ -24,7 +24,7 @@ public class Model implements Observable{
 	public void translate(String s) {
 		this.input = s;
 		this.result = translate.latinToMorse(this.input);
-		System.out.println(s +" model");
+		this.output = this.result.getTranslatedString();
 		notifyObserver();
 	}
 	

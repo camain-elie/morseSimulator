@@ -51,6 +51,7 @@ public class Screen extends JFrame implements Observer {
 	public Screen(Model model) {
 		this.setTitle("Traducteur Morse");
 		this.setSize(1200, 800);
+		this.setMinimumSize(new Dimension(1000,700));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
@@ -175,7 +176,6 @@ public class Screen extends JFrame implements Observer {
 			try {
 			Document x = e.getDocument();
 			String test = x.getText(0, x.getLength());
-			System.out.println(test);
 			controler.control(test);
 			}catch(BadLocationException p) {
 				p.printStackTrace();
