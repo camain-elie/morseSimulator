@@ -14,4 +14,8 @@ public class Controler {
 		s = s.toLowerCase();
 		this.model.translate(s);
 	}
+	
+	public void switchTranslation() {
+		this.model.switchTranslationMode();
+	}
 }

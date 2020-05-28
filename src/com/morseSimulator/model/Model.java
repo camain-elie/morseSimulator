@@ -22,14 +22,26 @@ public class Model implements Observable{
 	}
 	
 	public void translate(String s) {
-		this.input = s;
-		this.result = translate.latinToMorse(this.input);
-		this.output = this.result.getTranslatedString();
-		notifyObserver();
+		if(toMorse) {
+			this.input = s;
+			this.result = translate.latinToMorse(this.input);
+			this.output = this.result.getTranslatedString();
+			notifyObserver();
+		}else {
+			this.input = s;
+			this.result = translate.morseToLatin(this.input);
+			this.output = this.result.getTranslatedString();
+			notifyObserver();
+		}
 	}
 	
 	
-	
+	public void switchTranslationMode() {
+		this.toMorse = !toMorse;
+		for(Observer obs : listObserver) {
+			obs.switchTranslation(toMorse);
+		}
+	}
 	
 	
 	
@@ -46,5 +58,7 @@ public class Model implements Observable{
 	public void deleteObserver() {
 		this.listObserver = new ArrayList<Observer>();
 	}
+
+
 
 }

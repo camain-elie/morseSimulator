@@ -1,6 +1,5 @@
 package com.morseSimulator.model;
 
-
 /**
  * Translator is a set tools that let the user translate a String written in the latin alphabet into a String written with the morse alphabet.
  * @author Elie
@@ -40,8 +39,25 @@ public class Translator {
 	
 	
 	
-	public TranslationResult morseToLatin(String morse) {	
-		return null;
+	public TranslationResult morseToLatin(String morse) {
+		String translated = "", t = "", errorString = "";
+		String[] lineSplit = morse.split("\n");
+		for(int i = 0; i < lineSplit.length; i++) {
+			String[] spaceSplit = lineSplit[i].split(" ");
+			for(int j = 0; j < spaceSplit.length; j++) {
+				t = this.morse.findLatinChar(spaceSplit[j]);
+				if(!t.equals(spaceSplit[j])) {
+					translated += t;
+				}else{
+					errorString += ", " + t;
+				}
+			}
+			translated += "\n";
+		}
+		if(errorString.length()>0) {
+			errorString = errorString.substring(1,errorString.length());
+		}
+		return new TranslationResult(translated,errorString);
 	}
 	
 	

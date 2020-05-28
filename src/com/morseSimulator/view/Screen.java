@@ -47,7 +47,6 @@ public class Screen extends JFrame implements Observer {
 	
 	
 	
-	
 	public Screen(Model model) {
 		this.setTitle("Traducteur Morse");
 		this.setSize(1200, 800);
@@ -108,7 +107,13 @@ public class Screen extends JFrame implements Observer {
 		Icon switchIcon = new ImageIcon("images/arrow.png");
 	    switchTranslation.setIcon(switchIcon);
 	    switchTranslation.setContentAreaFilled(false);
-	    switchTranslation.setVisible(false);
+	    switchTranslation.setVisible(true);
+	    switchTranslation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controler.switchTranslation();
+			}
+	    	
+	    });
 	    container.add(switchTranslation, gc);
 		
 		gc.gridx = 3;
@@ -225,6 +230,21 @@ public class Screen extends JFrame implements Observer {
 	public void update(TranslationResult result) {
 		setUserMessage(result.getErrorString());
 		this.outputText.setText(result.getTranslatedString());
+		
+	}
+
+
+
+	@Override
+	public void switchTranslation(boolean bool) {
+		String temp = rightLanguageLabel.getText();
+		rightLanguageLabel.setText(leftLanguageLabel.getText());
+		leftLanguageLabel.setText(temp);
+		
+		temp = inputText.getText();
+		inputText.setText(outputText.getText());
+		outputText.setText(temp);
+		
 		
 	}
 	
