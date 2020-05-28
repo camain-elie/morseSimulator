@@ -27,8 +27,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+//import java.awt.event.KeyEvent;
+//import java.awt.event.KeyListener;
 
 
 public class Screen extends JFrame implements Observer {
@@ -157,7 +157,7 @@ public class Screen extends JFrame implements Observer {
 		
 		gc.gridx = 1;
 		gc.gridy = 2;
-		userMessage.setFont(new Font("Arial", Font.BOLD, 12));
+		userMessage.setFont(new Font("Dialog.plain", Font.BOLD, 12));
 		userMessage.setPreferredSize(new Dimension(300,100));
 		userMessage.setEditable(false);
 		userMessage.setWrapStyleWord(true);

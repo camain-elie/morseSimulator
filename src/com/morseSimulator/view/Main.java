@@ -1,7 +1,6 @@
 package com.morseSimulator.view;
 
 import com.morseSimulator.model.Model;
-import com.morseSimulator.model.Translator;
 
 public class Main {
 
