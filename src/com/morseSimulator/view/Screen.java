@@ -187,7 +187,6 @@ public class Screen extends JFrame implements Observer {
 			try {
 			Document x = e.getDocument();
 			String test = x.getText(0, x.getLength());
-			System.out.println(test);
 			controler.control(test);
 			}catch(BadLocationException p) {
 				p.printStackTrace();
