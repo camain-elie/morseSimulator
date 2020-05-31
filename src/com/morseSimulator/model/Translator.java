@@ -36,28 +36,37 @@ public class Translator {
 	}
 	
 	
-	
-	
-	
+	/**
+	 * 
+	 * @param morse
+	 * @return
+	 */
 	public TranslationResult morseToLatin(String morse) {
-		String translated = "", t = "", errorString = "";
+		//TODO Multiple spaces counted as errors
+		String latinString = "", temporary = "", errorString = "";
 		String[] lineSplit = morse.split("\n");
 		for(int i = 0; i < lineSplit.length; i++) {
 			String[] spaceSplit = lineSplit[i].split(" ");
 			for(int j = 0; j < spaceSplit.length; j++) {
-				t = this.morse.findLatinChar(spaceSplit[j]);
-				if(!t.equals(spaceSplit[j])) {
-					translated += t;
+				System.out.println();
+				temporary = this.morse.findLatinChar(spaceSplit[j]);
+				if(!temporary.equals(spaceSplit[j]) || temporary.equals("\n") || temporary.equals(" ") || temporary.equals("	")) {
+					latinString += temporary;
 				}else{
-					errorString += ", " + t;
+					if(temporary.equals("")) {
+						latinString += " ";
+					}else{
+						errorString += ", " + temporary;
+					}
 				}
 			}
-			translated += "\n";
+			latinString += "\n";
 		}
 		if(errorString.length()>0) {
-			errorString = errorString.substring(1,errorString.length());
+			errorString = errorString.substring(2,errorString.length());
 		}
-		return new TranslationResult(translated,errorString);
+		System.out.println("." + errorString + ".");
+		return new TranslationResult(latinString,errorString);
 	}
 	
 	
