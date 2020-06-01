@@ -6,6 +6,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -38,8 +39,8 @@ public class Screen extends JFrame implements Observer {
 	private static final long serialVersionUID = 1L;
 	private JPanel container = new JPanel();
 	private JLabel rightLanguageLabel = new JLabel(), leftLanguageLabel = new JLabel();
-	private JButton switchTranslation = new JButton(), alphabet = new JButton();
-	private JTextArea inputText = new JTextArea(), outputText = new JTextArea(), userMessage = new JTextArea();
+	private JButton switchTranslation = new JButton(), alphabet = new JButton(), manualMode = new JButton();
+	private JTextArea inputText = new JTextArea(), outputText = new JTextArea(), userMessage = new JTextArea(), manualMorseMessage = new JTextArea();
 	private GridBagLayout gridLayout = new GridBagLayout();
 	private GridBagConstraints gc = new GridBagConstraints();
 	private Controler controler;
@@ -129,6 +130,7 @@ public class Screen extends JFrame implements Observer {
 		alphabet.setText("<html>Afficher l'alphabet morse</html>");
 		alphabet.setContentAreaFilled(false);
 		alphabet.addActionListener(new ActionListener() {
+			// TODO make the alphabet non modal
 			public void actionPerformed(ActionEvent e) {
 				String alphabet = "Lettres :\n"
 						+ "a = .-     b = -...     c = -.-.     d = -..     e = .     f = ..-.     g = --.     h = ....     i = ..\n"
@@ -156,7 +158,23 @@ public class Screen extends JFrame implements Observer {
 		});
 		container.add(alphabet, gc);
 		
-		//gc.anchor = GridBagConstraints.PAGE_END;
+		gc.anchor = GridBagConstraints.PAGE_END;
+		manualMode.setPreferredSize(new Dimension(80,80));
+		manualMode.setContentAreaFilled(false);
+		manualMode.setVisible(false);
+		manualMode.setText("<html>Lancer le mode manuel</html>");
+		manualMode.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controler.switchManualMode();
+				//((JButton)e.getSource()).setText("<html>Arrêter le mode manuel</html>");
+			}
+			
+		});
+		manualMode.getInputMap().put(KeyStroke.getKeyStroke("SPACE"),"none");
+		container.add(manualMode, gc);
+		
 		gc.gridx = 3;
 		container.add(scrollPaneOutput, gc);
 		
@@ -170,6 +188,16 @@ public class Screen extends JFrame implements Observer {
 		userMessage.setLineWrap(true);
 		setUserMessage("");
 		container.add(userMessage, gc);
+		
+		gc.gridx = 3;
+		manualMorseMessage.setText("");
+		manualMorseMessage.setFont(new Font("Arial", Font.BOLD, 12));
+		manualMorseMessage.setPreferredSize(new Dimension(300,100));
+		manualMorseMessage.setEditable(false);
+		manualMorseMessage.setWrapStyleWord(true);
+		manualMorseMessage.setOpaque(false);
+		manualMorseMessage.setLineWrap(true);
+		container.add(manualMorseMessage, gc);
 	}
 	
 	
@@ -236,7 +264,7 @@ public class Screen extends JFrame implements Observer {
 
 
 	@Override
-	public void switchTranslation(boolean bool) {
+	public void switchTranslation(boolean isMorse) {
 		String temp = rightLanguageLabel.getText();
 		rightLanguageLabel.setText(leftLanguageLabel.getText());
 		leftLanguageLabel.setText(temp);
@@ -245,10 +273,22 @@ public class Screen extends JFrame implements Observer {
 		inputText.setText(outputText.getText());
 		outputText.setText(temp);
 		
+		manualMode.setVisible(!isMorse);
+		
+		
+		
 		
 	}
 	
-	
+	public void updateManualMorse(boolean isManualMorseOn) {
+		if(isManualMorseOn) {
+			manualMode.setText("<html>Arrêter le mode manuel</html>");
+			manualMorseMessage.setVisible(true);
+		}else {
+			manualMode.setText("<html>Lancer le mode manuel</html>");
+			manualMorseMessage.setVisible(false);
+		}
+	}
 	
 	
 	

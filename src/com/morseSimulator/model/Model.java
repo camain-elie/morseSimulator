@@ -9,7 +9,7 @@ public class Model implements Observable{
 	private Translator translate = new Translator();
 	private String input = new String("");
 	private String output = new String("");
-	private boolean toMorse = true;
+	private boolean toMorse = true, isManualMorseOn = false;
 	private TranslationResult result;
 	private ArrayList<Observer> listObserver = new ArrayList<Observer>();
 	
@@ -45,6 +45,13 @@ public class Model implements Observable{
 	
 	
 	
+	public void switchManualMode() {
+		isManualMorseOn = !isManualMorseOn;
+		notifyManualMorse();
+	}
+	
+	
+	
 	public void addObserver(Observer obs) {
 		this.listObserver.add(obs);
 	}
@@ -59,6 +66,9 @@ public class Model implements Observable{
 		this.listObserver = new ArrayList<Observer>();
 	}
 
-
-
+	public void notifyManualMorse() {
+		for(Observer obs : listObserver) {
+			obs.updateManualMorse(isManualMorseOn);
+		}
+	}
 }

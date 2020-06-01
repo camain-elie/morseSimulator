@@ -7,10 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		Model model = new Model();
 		Screen sc = new Screen(model);
-		//model.addObserver(sc);
 		sc.setVisible(true);
-		/*Translator t = new Translator();
-		t.latinToMorse("abc");*/
 	}
 
 }

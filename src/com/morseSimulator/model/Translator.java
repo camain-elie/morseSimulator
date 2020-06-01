@@ -42,7 +42,6 @@ public class Translator {
 	 * @return
 	 */
 	public TranslationResult morseToLatin(String morse) {
-		//TODO Multiple spaces counted as errors
 		String latinString = "", temporary = "", errorString = "";
 		String[] lineSplit = morse.split("\n");
 		for(int i = 0; i < lineSplit.length; i++) {
@@ -65,7 +64,6 @@ public class Translator {
 		if(errorString.length()>0) {
 			errorString = errorString.substring(2,errorString.length());
 		}
-		System.out.println("." + errorString + ".");
 		return new TranslationResult(latinString,errorString);
 	}
 	

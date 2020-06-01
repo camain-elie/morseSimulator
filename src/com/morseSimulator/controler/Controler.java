@@ -18,4 +18,8 @@ public class Controler {
 	public void switchTranslation() {
 		this.model.switchTranslationMode();
 	}
+	
+	public void switchManualMode() {
+		this.model.switchManualMode();
+	}
 }
